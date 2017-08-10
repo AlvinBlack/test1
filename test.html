@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title> Lab521 </title>  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>   
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <style type="text/css">
+  	*{
+  		font-size: 30px;
+  	}
+  </style>
+ </head> 
+ <body> 
+
+<h1>学生查询</h1>
+<label>请输入学生姓名：</label>
+<input type="text" id="sName" />
+<button id="search">查询</button> 
+<p id="searchResult"></p>
+
+
+<h1>学生创建</h1>
+<label>请输入学生姓名：</label>
+<input type="text" id="studentName" /><br>
+<label>请输入学生年级：</label>
+<input type="text" id="studentClass" /><br>
+<label>请输入学生性别：</label>
+<select id="studentSex">
+<option>男</option>
+<option>女</option>
+</select><br>
+<label>请输入员工家庭所在地：</label>
+<input type="text" id="studentHome" /><br>
+<button id="save">创建</button>
+<p id="createResult"></p>
+
+ </body>
+
+
+<script type="text/javascript">
+
+document.getElementById("search").onclick=function(){
+	//发送Ajas请求查询并输出返回的查询结果
+	var request = new XMLHttpRequest();
+	request.open("GET","test.php?name=" + document.getElementById("sName").value);
+	request.send();
+	request.onreadystatechange=function(){
+		if(request.readyState===4){
+			if(request.status===200){
+				document.getElementById("searchResult").innerHTML=request.responseText;
+
+			}else{
+				alert("发生错误:" + request.status);
+			}
+		}
+	}
+}
+document.getElementById("save").onclick=function(){
+	//发送AJas请求新建并输出返回的新建结果
+	var request=new XMLHttpRequest();
+	request.open("POST","test.php")
+    var data="name="+document.getElementById("studentName").value+"&class="+document.getElementById("studentClass").value+"&sex="+document.getElementById("studentSex").value+"&home="+document.getElementById("studentHome").value
+    request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    request.send(data);
+    request.onreadystatechange=function(){
+		if(request.readyState===4){
+			if(request.status===200){
+				document.getElementById("createResult").innerHTML=request.responseText;
+			}else{
+				alert("发生错误："+ request.status);
+			}
+		}
+	}
+
+}
+
+
+
+
+
+
+/*jQuery.getJSON(
+ 	"test.php",
+ 	{test:"testvalue"},
+ 	function(data){
+ 	alert(data.Message);
+ });/**/
+
+ </script>
